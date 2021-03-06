@@ -61,7 +61,9 @@ impl Operation {
 pub enum Gravity {
   Force,
   Field,
+}
 
+impl Gravity {
   pub fn solve(&self, variables: HashMap<&str,&str>) -> Result<&str, &str> {
     match *self {
       Gravity::Force => match Gravity::solve_force(variables) {
@@ -76,33 +78,40 @@ pub enum Gravity {
     }
   }
 
-  fn solve_force(variables: HashMap<&str, &str>) -> Result<&str, &str>{
-    let mass1 = match variables.get("mass1") {
-      Some(i) => i,
+  fn solve_force<'a>(variables: HashMap<&str, &str>) -> Result<&'a str, &'a str>{
+    let mass1: String = match variables.get("mass1") {
+      Some(i) => i.to_string(),
       None => return Err("'mass1' is required for calculating the Gravitational Force"),
     };
-    let mass2 = match variables.get("mass2") {
-      Some(i) => i,
+    let mass2: String = match variables.get("mass2") {
+      Some(i) => i.to_string(),
       None => return Err("'mass2' is required for calculating the Gravitational Force"),
     };
-    let radius = match variables.get("radius") {
-      Some(i) => i,
+    let radius: String = match variables.get("radius") {
+      Some(i) => i.to_string(),
       None => return Err("'radius' is required for calculating the Gravitational Force"),
     };
 
-    let mass1 = match mass1.trim().parse() {
+    let mass1: u32 = match mass1.trim().parse() {
       Ok(m) => m,
-      Err(err) => return Err(err),
+      Err(err) => return Err("Error while parsing mass1"),
     };
-    let mass2 = match mass2.trim().parse() {
+    let mass2: u32 = match mass2.trim().parse() {
       Ok(m) => m,
-      Err(err) => return Err(err),
+      Err(err) => return Err("Error while parsing mass2"),
     };
-    let radius = match radius.trim().parse() {
+    let radius: u32 = match radius.trim().parse() {
       Ok(r) => r,
-      Err(err) => return Err(err),
+      Err(err) => return Err("Error while parsing radius"),
     };
 
+    Ok("success")
+  }
+
+  fn solve_field<'a>(variables: HashMap<&str, &str>) -> Result<&'a str, &'a str> {
+    if true {
+      return Err("lol")
+    }
     Ok("success")
   }
 }
